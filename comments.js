@@ -14,8 +14,18 @@ var month = months[d.getMonth()];
 var date = d.getDate();
 var date_folder = day+'_'+month+'_'+date;
 
+var testFolder = 'files';
+var files = [];
+fs.readdirSync(testFolder).forEach(file => {
+    files.push(file);
+});
+
+date_folder = files.length+'_'+date_folder;
+
 //GOING THROUGH SUBREDDIT ARRAY
 var arr = []
+var urls = [];
+
 for(var s=0;s<subreddits.length;s++) {
 
     var raw_data = fs.readFileSync('files/'+date_folder+'/'+subreddits[s]+'/urls.json');
@@ -25,23 +35,33 @@ for(var s=0;s<subreddits.length;s++) {
         var elements = data[i].split("/");
 
         request(data[i] + ".json", function (error, response, body) {
-            if(error !== null) {
-                console.log('error:', error); // Print the error if one occurred
+            if(error !== null ){
+                if(error.errno !== 'ETIMEDOUT') {
+                    console.log('error:', error); // Print the error if one occurred
+                }
             }
-            if(response.statusCode !== 200) {
-                console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+            if(response) {
+                if (response.statusCode) {
+                    if (response.statusCode !== 200) {
+                        console.log('response: ',response.request.uri.href);
+                        urls.push(response.request.uri.href);
+                    }else{
+                        arr.push(body);
+                    }
+                }
             }
-            // console.log(body); // Print the HTML for the Google homepage.
-            arr.push(body)
         });
     }
 }
 setTimeout(() => {
     var json = JSON.parse(arr[0]);
+
+    // console.log(arr.length);
+    // return;
     // console.log(json[0].data.children[0].data.subreddit);
     // console.log(json[0].data.children[0].data.id);
-
     // throw new Error("THE END");
+    // console.log(json[0].data.children[0].data.subreddit);
     for (var i = 0; i < arr.length; i++) {
         var json = JSON.parse(arr[i]);
         fs.writeFile('files/'+date_folder+'/' + json[0].data.children[0].data.subreddit + '/comments/' + json[0].data.children[0].data.id + '.json', arr[i], (callback) => {
@@ -50,5 +70,13 @@ setTimeout(() => {
             }
         });
     }
-    console.log(arr.length);
-}, subreddits.length*3500)
+
+    fs.appendFile('files/' + date_folder + '/problematic.json', JSON.stringify(urls), (callback) => {
+        if(callback !== null) {
+            console.log(callback);
+        }
+    });
+
+    console.log("Extracted posts: "+arr.length);
+    console.log("Problematic ones: "+urls.length);
+}, subreddits.length*1500);
