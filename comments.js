@@ -79,4 +79,4 @@ setTimeout(() => {
 
     console.log("Extracted posts: "+arr.length);
     console.log("Problematic ones: "+urls.length);
-}, subreddits.length*1500);
+}, subreddits.length*2500);

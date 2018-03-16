@@ -33,8 +33,10 @@ for(var s=0;s<subreddits.length;s++) {
 
     var posts_data = [];
     for (var p = 0; p < posts.length; p++) {
-        var raw_data = fs.readFileSync(testFolder + '/' + posts[0]);
+        var json_file = p;
+        var raw_data = fs.readFileSync(testFolder + '/' + posts[p]);
         var data = JSON.parse(raw_data);
+        // console.log("Read File: "+)
 
         var object_data = data[0].data.children[0].data;
         var post = new Object();
@@ -75,6 +77,13 @@ for(var s=0;s<subreddits.length;s++) {
         }
 
         posts_data.push(post);
+        // console.log("Sad ce da brise");
+        // return;
+        fs.unlink(testFolder + '/' + posts[json_file], (err) => {
+            if(err){
+                console.log("Something went wrong!");
+            }
+        });
     }
 
     var folder = 'files/' + date_folder + '/' + subreddits[s] + '/extracted_data/data.json';

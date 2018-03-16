@@ -24,11 +24,13 @@ date_folder = files.length+'_'+date_folder;
 for(var s=0;s<subreddits.length;s++) {
     var rawdata,data,rawdata_new,data_new;
 
-    rawdata = fs.readFileSync('files/' + date_folder + '/' + subreddits[s] + '/posts.json');
-    data = JSON.parse(rawdata);
+
     if(fs.existsSync('files/' + date_folder + '/' + subreddits[s] + '/new_posts.json')) {
         rawdata_new = fs.readFileSync('files/' + date_folder + '/' + subreddits[s] + '/new_posts.json');
         data_new = JSON.parse(rawdata_new);
+    }else{
+        rawdata = fs.readFileSync('files/' + date_folder + '/' + subreddits[s] + '/posts.json');
+        data = JSON.parse(rawdata);
     }
 //EXTRACTING ARRAY OF SUB-REDDIT OBJECTS FROM URL OBJECT
     //IF WE HAVE NEW POSTS
@@ -88,31 +90,31 @@ for(var s=0;s<subreddits.length;s++) {
 
     if(data_new) {
         var without_repeat_new = [];
+
         for (var i = 0; i < posts_new.length; i++) {
             var repeat = 0;
-            for (var j = i; j < posts_new.length; j++) {
+            for (var j = i; j < posts_new.length-1; j++) {
                 if (posts_new[i].title === posts_new[j].title) {
                     repeat++;
                 }
             }
-            if (repeat === 1) {
+            if (repeat <= 1) {
                 without_repeat_new.push(posts_new[i]);
             }
         }
-        console.log("Without repeat new " + subreddits[s] + ": " + without_repeat_new.length);
+        console.log("Without repeat from post_new " + subreddits[s] + ": " + without_repeat_new.length);
 
-        for(var p = 0;p<without_repeat_new.length;p++){
-            var repeat = 0;
-            for(var n=0;n<without_repeat_new.length;n++){
-                if(without_repeat_new[p].title === without_repeat_new[n].title){
-                    repeat++;
-                }
-            }
-            if(repeat === 0){
-                without_repeat_new.push(without_repeat_new[p]);
-            }
-        }
-        console.log("New without repeat " + subreddits[s] + ": " + without_repeat_new.length);
+        // for(var p = 0;p<without_repeat_new.length;p++){
+        //     var repeat = 0;
+        //     for(var n=0;n<without_repeat_new.length;n++){
+        //         if(without_repeat_new[p].title === without_repeat_new[n].title){
+        //             repeat++;
+        //         }
+        //     }
+        //     if(repeat === 0){
+        //         without_repeat_new.push(without_repeat_new[p]);
+        //     }
+        // }
     }else{
 
         var without_repeat = [];
