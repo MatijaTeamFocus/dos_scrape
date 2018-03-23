@@ -33,7 +33,6 @@ for(var s=0;s<subreddits.length;s++) {
 
     var posts_data = [];
     for (var p = 0; p < posts.length; p++) {
-        var json_file = p;
         var raw_data = fs.readFileSync(testFolder + '/' + posts[p]);
         var data = JSON.parse(raw_data);
         // console.log("Read File: "+)
@@ -77,9 +76,8 @@ for(var s=0;s<subreddits.length;s++) {
         }
 
         posts_data.push(post);
-        // console.log("Sad ce da brise");
-        // return;
-        fs.unlink(testFolder + '/' + posts[json_file], (err) => {
+
+        fs.unlink(testFolder + '/' + posts[p], (err) => {
             if(err){
                 console.log("Something went wrong!");
             }
