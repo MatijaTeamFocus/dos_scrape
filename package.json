@@ -9,7 +9,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "request": "^2.83.0"
+    "fast-csv": "^2.4.1",
+    "request": "^2.83.0",
+    "xlsx": "^0.12.6"
   },
   "devDependencies": {
     "nodemon": "^1.14.11"

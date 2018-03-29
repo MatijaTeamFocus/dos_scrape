@@ -29,7 +29,7 @@ for(var s=0;s<subreddits.length;s++) {
     var posts = [];
     fs.readdirSync(testFolder).forEach(file => {
         posts.push(file);
-    })
+    });
 
     var posts_data = [];
     for (var p = 0; p < posts.length; p++) {
