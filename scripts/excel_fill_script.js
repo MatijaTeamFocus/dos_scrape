@@ -18,7 +18,18 @@ var minus = 2;
 
 var new_data = [];
 
-for(var r = 2;r<92;r++){
+for(var d = 0;d<data.length-1;d++){
+
+    for(var p = d+1;p<data.length;p++){
+        if(data[d].created < data[p].created){
+            var help = data[d];
+            data[d] = data[p];
+            data[p] = help;
+        }
+    }
+}
+
+for(var r = 2;r<139;r++){
     var row = {};
 
     row.id = elements['A'+r].v;
@@ -31,11 +42,18 @@ for(var r = 2;r<92;r++){
     row.market_cap = elements['H'+r].v;
 
     if(elements['I'+r]){
-        row.ups = data[r-minus].ups;
-        row.downs = data[r-minus].downs;
-        row.score = data[r-minus].score;
-        row.num_comments = data[r-minus].num_comments;
-        row.created = data[r-minus].created;
+
+        if(r == 50){
+            console.log(row.date);
+            console.log(data[r - minus].created);
+        }
+        // if(data[r-minus]) {
+            row.ups = data[r - minus].ups;
+            row.downs = data[r - minus].downs;
+            row.score = data[r - minus].score;
+            row.num_comments = data[r - minus].num_comments;
+            row.created = data[r - minus].created;
+        // }
     }else{
         minus++;
     }

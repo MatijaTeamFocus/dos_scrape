@@ -19,7 +19,7 @@ var elements = wb.Sheets.Sheet1;
 var letters = ['A','B','C','D','E','F','G','H','I'];
 var urls = [];
 
-for(var r = 1;r<92;r++){
+for(var r = 1;r<140;r++){
     var print = '';
     for(var l = 0;l<letters.length;l++){
         var index = letters[l]+r;
@@ -57,6 +57,7 @@ for(var u = 0;u<urls.length;u++){
                 }
             }
         }
+        console.log(response.request.uri.href);
     });
 
 }
@@ -86,4 +87,4 @@ setTimeout(() => {
 
     console.log("Extracted posts: "+posts.length);
     console.log("Problematic ones: "+problems.length);
-}, 10000);
+}, 15000);
